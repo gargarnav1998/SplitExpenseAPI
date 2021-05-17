@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SplitExpenses.Provider;
+using SplitExpenses.Services;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SplitExpenses
 {
@@ -24,9 +28,15 @@ namespace SplitExpenses
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SplitExpensesDbContext>(o => o.UseSqlServer(configuration.GetSection("Entities").Value));
-
             services.AddMvc();
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options => {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.IgnoreNullValues = true;
+                }
+                );
+
             services.AddHttpClient();
             RegisterDependencies(services);
         }
@@ -35,6 +45,9 @@ namespace SplitExpenses
         {
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<SplitExpensesDbContext>();
+            services.AddTransient<ExpenseService>();
+            services.AddTransient<ParticipantService>();
+            services.AddTransient<GroupService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,8 +61,6 @@ namespace SplitExpenses
             {
                 app.UseHsts();
             }
-
-
 
             app.UseResponseCaching();
             app.UseRouting();
