@@ -26,6 +26,14 @@ namespace SplitExpenses.Controllers
             return _groupService.GetAllGroup();
         }
 
+        [Route("")]
+        [HttpPost]
+        public ActionResult CreateGroup(Group group)
+        {
+            _groupService.CreateGroup(group);
+            return Ok();
+        }
+
         [Route("id/{id}")]
         [HttpGet]
         public ActionResult<Group> GetGroupById(int id)

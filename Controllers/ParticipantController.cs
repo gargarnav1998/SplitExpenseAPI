@@ -19,6 +19,23 @@ namespace SplitExpenses.Controllers
             _pService = pService;
         }
 
+        [Route("")]
+        [HttpPost]
+        public ActionResult CreateParticipant(Participant participant)
+        {
+            _pService.CreateParticipant(participant);
+            return Ok();
+        }
+
+        [Route("groupParticipant")]
+        [HttpPost]
+        public ActionResult CreateGroupParticipant(GroupParticipant participant)
+        {
+            _pService.CreateGroupParticipant(participant);
+            return Ok();
+        }
+
+
         [Route("groupId/{groupId}")]
         [HttpGet]
         public ActionResult<List<Participant>> GetParticipantsByGroup(int groupId)

@@ -10,7 +10,7 @@ namespace SplitExpenses.Entities
         public string City { get; set; }
         public string Country { get; set; }
         public int Zipcode { get; set; }
-        public int Mobile { get; set; }
+        public long Mobile { get; set; }
         public string Remarks { get; set; }
 
     }

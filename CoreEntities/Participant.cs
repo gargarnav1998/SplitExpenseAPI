@@ -7,7 +7,7 @@ namespace SplitExpenses.Entities
     {
         public string Name { get; set; }
         public string EmailId { get; set;}
-        public int Mobile { get; set; }
+        public long Mobile { get; set; }
         public DateTime DOB { get; set; }
         public string Remarks { get; set; }
         public int SecondMobile { get; set; }

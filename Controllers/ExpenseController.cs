@@ -33,6 +33,15 @@ namespace SplitExpenses.Controllers
             return _expenseService.GetExpenseById(id);
         }
 
+        [Route("")]
+        [HttpPost]
+        public ActionResult CreateExpense(Expense expense)
+        {
+            _expenseService.CreateExpense(expense);
+            return Ok();
+        }
+
+
         [HttpGet]
         [Route("groupId/{groupId}")]
         public ActionResult<List<Expense>> GetExpensesByGroup(int groupId)

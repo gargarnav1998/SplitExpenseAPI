@@ -20,8 +20,8 @@ namespace SplitExpenses
         public DbSet<Participant> Participants { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Expense> Expenses { get; set; }
-        public DbSet<GroupParticipant> Transactions { get; set; }
-        public DbSet<Transaction> GroupParticipantExpenses { get; set; }
+        public DbSet<GroupParticipant> GroupParticipantExpenses { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Address> Addresses { get; set; }
     }
 }

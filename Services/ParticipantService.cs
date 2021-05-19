@@ -21,5 +21,18 @@ namespace SplitExpenses.Services
             var participantIds = groupParticipant.Select(x => x.ParticipantId);
             return _unitOfWork.Repository<Participant>().FindBy(x => participantIds.Contains(x.Id)).ToList();
         }
+
+        public void CreateParticipant(Participant participant)
+        {
+            _unitOfWork.Repository<Address>().Insert(participant.Address);
+            _unitOfWork.Repository<Participant>().Insert(participant);
+            _unitOfWork.Commit();
+        }
+
+        public void CreateGroupParticipant(GroupParticipant participant)
+        {
+            _unitOfWork.Repository<GroupParticipant>().Insert(participant);
+            _unitOfWork.Commit();
+        }
     }
 }
