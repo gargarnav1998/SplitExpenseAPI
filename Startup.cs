@@ -13,6 +13,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
+using System;
 
 namespace SplitExpenses
 {
@@ -32,6 +33,7 @@ namespace SplitExpenses
         {
             services.AddDbContext<SplitExpensesDbContext>(o => o.UseSqlServer(configuration.GetSection("Entities").Value));
             services.AddMvc();
+            services.AddCors();
             services.AddControllers()
                 .AddJsonOptions(options => {
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
@@ -102,6 +104,10 @@ namespace SplitExpenses
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSwagger();
+            app.UseCors(builder => {
+                builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                builder.SetPreflightMaxAge(TimeSpan.FromDays(1));
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
