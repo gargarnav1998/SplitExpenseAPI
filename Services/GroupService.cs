@@ -31,12 +31,28 @@ namespace SplitExpenses.Services
             _unitOfWork.Commit();
         }
 
-        public List<Group> GetGroupsByParticipant(int participantId)
+        public List<Group> GetGroupsByParticipantId(int participantId)
         {
             var groupParticipant = _unitOfWork.Repository<GroupParticipant>().FindBy(x => x.ParticipantId == participantId && x.IsActive == true).ToList();
             var groupIds = groupParticipant.Select(x => x.GroupId);
             return _unitOfWork.Repository<Group>().FindBy(x => groupIds.Contains(x.Id)).ToList();
 
         }
+
+        public List<Group> GetGroupsByEmail(string email)
+        {
+            var participant = _unitOfWork.Repository<Participant>().FindBy(p => p.EmailId == email).FirstOrDefault();
+            if (participant == null)
+                throw new Exception($"No participant found with this email {email}");
+            var participantGroups = _unitOfWork.Repository<GroupParticipant>().FindBy(pg => pg.ParticipantId == participant.Id).ToList();
+            if (participantGroups == null)
+                throw new Exception("no group found");
+            var groupIds = participantGroups.Select(g => g.Id).ToList();
+            var groups =  _unitOfWork.Repository<Group>().FindBy(g => groupIds.Contains(g.Id)).ToList();
+            return groups;
+
+        }
+
+
     }
 }

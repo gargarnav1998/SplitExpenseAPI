@@ -29,9 +29,20 @@ namespace SplitExpenses.Services
             _unitOfWork.Commit();
         }
 
-        public void CreateGroupParticipant(GroupParticipant participant)
+        public void CreateGroupParticipant(int groupId, Participant participant)
         {
-            _unitOfWork.Repository<GroupParticipant>().Insert(participant);
+            if (participant.Id == 0)
+            {   
+                var participantRepository = _unitOfWork.Repository<Participant>();
+                participantRepository.Insert(participant);
+                _unitOfWork.Commit();
+            }
+            var groupParticipant = new GroupParticipant();
+            groupParticipant.GroupId = groupId;
+            groupParticipant.ParticipantId = participant.Id;
+            groupParticipant.IsActive = true;
+
+            _unitOfWork.Repository<GroupParticipant>().Insert(groupParticipant);
             _unitOfWork.Commit();
         }
     }

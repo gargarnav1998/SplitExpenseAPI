@@ -48,5 +48,46 @@ namespace SplitExpenses.Controllers
         {
             return _expenseService.GetExpenseByGroup(groupId);
         }
+
+        //get expenses by emailId
+        [Route("participant/email")]
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public ActionResult<List<Expense>> GetExpensesByParticipantEmail(string email)
+        {
+            try
+            {
+                var expenses = _expenseService.getAllExpenseByParticipantEmail(email);
+                return expenses;
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("error", ex.Message);
+                return BadRequest(ModelState);
+            }
+
+        }
+
+        //get expenses by participantId
+        [Route("participant/id")]
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public ActionResult<List<Expense>> GetExpensesByParticipantId(int participantId)
+        {
+            try
+            {
+                var expenses = _expenseService.getAllExpenseByParticipantId(participantId);
+                return expenses;
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("error", ex.Message);
+                return BadRequest(ModelState);
+            }
+
+        }
     }
+
 }

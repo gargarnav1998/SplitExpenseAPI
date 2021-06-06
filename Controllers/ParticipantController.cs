@@ -27,11 +27,11 @@ namespace SplitExpenses.Controllers
             return Ok();
         }
 
-        [Route("groupParticipant")]
+        [Route("groupParticipant/groupId/{groupId}")]
         [HttpPost]
-        public ActionResult CreateGroupParticipant(GroupParticipant participant)
+        public ActionResult CreateGroupParticipant(int groupId, Participant participant)
         {
-            _pService.CreateGroupParticipant(participant);
+            _pService.CreateGroupParticipant(groupId, participant);
             return Ok();
         }
 

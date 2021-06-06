@@ -35,5 +35,33 @@ namespace SplitExpenses.Services
             _unitOfWork.Repository<Expense>().Insert(expense);
             _unitOfWork.Commit();
         }
+
+        public List<Expense> getAllExpenseByParticipantEmail(string email)
+        {
+            var participant = _unitOfWork.Repository<Participant>().FindBy(p => p.EmailId == email).FirstOrDefault();
+            if (participant == null)
+                throw new Exception($"No Paticipant found by this email {email}");
+            var transactions = _unitOfWork.Repository<Transaction>().FindBy(t => t.ParticipantId == participant.Id).ToList();
+            if (transactions.Count() == 0)
+                throw new Exception($"No Transaction found by email {email}");
+            var expenseIds = transactions.Select(s => s.ExpenseId).Distinct().ToList();
+            var expenses = _unitOfWork.Repository<Expense>().FindBy(e => expenseIds.Contains(e.Id)).ToList();
+            return expenses;
+        }
+
+        public List<Expense> getAllExpenseByParticipantId(int participantId)
+        {
+            var participant = _unitOfWork.Repository<Participant>().FindBy(p => p.Id == participantId).FirstOrDefault();
+            if (participant == null)
+                throw new Exception($"No Paticipant found by this participantId {participantId}");
+            var transactions = _unitOfWork.Repository<Transaction>().FindBy(t => t.ParticipantId == participant.Id).ToList();
+            if (transactions.Count() == 0)
+                throw new Exception($"No Transaction found by this participantId {participantId}");
+            var expenseIds = transactions.Select(s => s.ExpenseId).Distinct().ToList();
+            var expenses = _unitOfWork.Repository<Expense>().FindBy(e => expenseIds.Contains(e.Id)).ToList();
+            return expenses;
+        }
+
+
     }
 }

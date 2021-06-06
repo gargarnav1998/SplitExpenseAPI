@@ -18,6 +18,7 @@ namespace SplitExpenses.Controllers
         {
             _groupService = groupService;
         }
+        // get all groups
 
         [Route("groups")]
         [HttpGet]
@@ -26,6 +27,7 @@ namespace SplitExpenses.Controllers
             return _groupService.GetAllGroup();
         }
 
+        // create group
         [Route("")]
         [HttpPost]
         public ActionResult CreateGroup(Group group)
@@ -34,18 +36,41 @@ namespace SplitExpenses.Controllers
             return Ok();
         }
 
-        [Route("id/{id}")]
+        // get group by groupid
+        [Route("group/{id}")]
         [HttpGet]
         public ActionResult<Group> GetGroupById(int id)
         {
             return _groupService.GetGroupById(id);
         }
 
+        // get group by participantid
         [Route("participantId/{participantId}")]
         [HttpGet]
         public ActionResult<List<Group>> GetGroupsByParticipant(int participantId)
         {
-            return _groupService.GetGroupsByParticipant(participantId);
+            return _groupService.GetGroupsByParticipantId(participantId);
         }
+
+        //get group by emailId
+        [Route("participant/email")]
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public ActionResult<List<Group>> GetGroupsByParticipantEmail(string email)
+        {
+            try
+            {
+                var groups =  _groupService.GetGroupsByEmail(email);
+                return groups;
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("error", ex.Message);
+                return BadRequest(ModelState);
+            }
+            
+        }
+
     }
 }
