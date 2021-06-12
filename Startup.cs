@@ -112,6 +112,7 @@ namespace SplitExpenses
                 builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 builder.SetPreflightMaxAge(TimeSpan.FromDays(1));
             });
+            app.UseHttpsRedirection();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

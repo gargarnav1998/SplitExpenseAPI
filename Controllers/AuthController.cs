@@ -10,8 +10,9 @@ using System.Threading.Tasks;
 
 namespace SplitExpenses.Controllers
 {
-    [Route("api/[controller]")]
+    
     [ApiController]
+    [Route("api/auth")]
     public class AuthController : ControllerBase
     {
         public AuthService _authService;
