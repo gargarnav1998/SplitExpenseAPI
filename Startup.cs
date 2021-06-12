@@ -14,6 +14,7 @@ using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace SplitExpenses
 {
@@ -32,6 +33,8 @@ namespace SplitExpenses
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SplitExpensesDbContext>(o => o.UseSqlServer(configuration.GetSection("Entities").Value));
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<SplitExpensesDbContext>();
             services.AddMvc();
             services.AddCors();
             services.AddControllers()

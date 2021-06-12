@@ -9,6 +9,7 @@ namespace SplitExpenses.Entities
         public int ParticipantId { get; set; }
         public string ParticipantName { get; set; }
         public string GroupName { get; set; }
+        public bool IsActive { get; set; }
         public int Amount { get; set; }
         public string Remarks { get; set; }
         public string ExtraInfo { get; set; }

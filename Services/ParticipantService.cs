@@ -22,6 +22,49 @@ namespace SplitExpenses.Services
             return _unitOfWork.Repository<Participant>().FindBy(x => participantIds.Contains(x.Id)).ToList();
         }
 
+        public Participant GetParticipantBYUserNameOrEmailId(string userName)
+        {
+            if (userName == null || userName.Length == 0)
+                throw new Exception("Invalid UserName");
+            var existingParticipant = new Participant();
+            var participant = _unitOfWork.Repository<Participant>().FindBy(p => p.EmailId == userName).FirstOrDefault();
+            if (participant != null)
+                existingParticipant = participant;
+            else
+            {
+                participant = _unitOfWork.Repository<Participant>().FindBy(p => p.ExtraInfo1 == userName).FirstOrDefault();
+                if (participant != null)
+                    existingParticipant = participant;
+            }
+            return existingParticipant;
+        }
+
+        public bool CheckPassword(string password)
+        {
+            bool result;
+            if (password == null || password.Length == 0)
+                throw new Exception("Invalid password");
+            var participant = _unitOfWork.Repository<Participant>().FindBy(p => p.ExtraInfo2 == password).FirstOrDefault();
+            if (participant == null)
+                result = false;
+            else
+                result = true;
+            return result;
+        }
+
+      public bool  GetParticipantByMobile(int mobile)
+        {
+            bool result;
+            if (mobile.ToString().Length == 0)
+                throw new Exception("Invalid mobile number");
+            var participant = _unitOfWork.Repository<Participant>().FindBy(p => p.Mobile == mobile).FirstOrDefault();
+            if (participant == null)
+                result = false;
+            else
+                result = true;
+            return result;
+        }
+
         public void CreateParticipant(Participant participant)
         {
             _unitOfWork.Repository<Address>().Insert(participant.Address);

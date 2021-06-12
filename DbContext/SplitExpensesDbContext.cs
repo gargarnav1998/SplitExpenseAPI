@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SplitExpenses.Entities;
 
 namespace SplitExpenses
 {
-    public class SplitExpensesDbContext : DbContext
+    public class SplitExpensesDbContext : IdentityDbContext
     {
         public SplitExpensesDbContext(DbContextOptions<SplitExpensesDbContext> options) 
             : base(options) { }
@@ -11,10 +12,9 @@ namespace SplitExpenses
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.HasDefaultSchema("");
+            base.OnModelCreating(modelBuilder);
         }
         //entities
         public DbSet<Participant> Participants { get; set; }
