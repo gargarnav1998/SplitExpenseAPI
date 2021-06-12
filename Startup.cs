@@ -35,8 +35,8 @@ namespace SplitExpenses
             services.AddDbContext<SplitExpensesDbContext>(o => o.UseSqlServer(configuration.GetSection("Entities").Value));
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<SplitExpensesDbContext>();
-            services.AddMvc();
             services.AddCors();
+            services.AddMvc();
             services.AddControllers()
                 .AddJsonOptions(options => {
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
@@ -112,6 +112,7 @@ namespace SplitExpenses
                 builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 builder.SetPreflightMaxAge(TimeSpan.FromDays(1));
             });
+            app.UseMvc();
             app.UseHttpsRedirection();
             app.UseEndpoints(endpoints =>
             {
