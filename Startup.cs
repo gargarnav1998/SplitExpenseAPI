@@ -88,6 +88,7 @@ namespace SplitExpenses
             services.AddTransient<ExpenseService>();
             services.AddTransient<ParticipantService>();
             services.AddTransient<GroupService>();
+            services.AddTransient<AuthService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
