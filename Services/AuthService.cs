@@ -43,8 +43,8 @@ namespace SplitExpenses.Services
                 throw new Exception("please enter the name");
             if (signUpModel.Password == null || signUpModel.Password.Length == 0)
                 throw new Exception("please enter the password Password");
-            if (signUpModel.Mobile.ToString().Length == 0)
-                throw new Exception("please enter the mobile number");
+            if (signUpModel.Mobile.ToString().Length != 10)
+                throw new Exception("please enter the valid number");
             if (signUpModel.Email == null || signUpModel.Email.Length == 0)
                 throw new Exception("please enter the email");
             if (signUpModel.Address == null || signUpModel.Address.Length == 0)
@@ -64,7 +64,7 @@ namespace SplitExpenses.Services
             participant.Name = signUpModel.Name;
             participant.ExtraInfo1 = signUpModel.UserName;
             participant.ExtraInfo2 = signUpModel.Password;
-            participant.Address.StreetAddress = signUpModel.Address;
+            participant.ExtraInfo3 = signUpModel.Address;
             _unitOfWork.Repository<Participant>().Insert(participant);
             _unitOfWork.Commit();
             return participant;
