@@ -20,7 +20,7 @@ namespace SplitExpenses.Controllers
             _authService = authService;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("login")]
         public string Login(SignInModel signInModel)
         {
