@@ -37,7 +37,7 @@ namespace SplitExpenses
                 .AddEntityFrameworkStores<SplitExpensesDbContext>();
             services.AddMvc();
             services.AddCors();
-            services.AddControllers()
+            services.AddControllers().AddNewtonsoftJson()
                 .AddJsonOptions(options => {
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                     options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
