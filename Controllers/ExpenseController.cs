@@ -71,7 +71,7 @@ namespace SplitExpenses.Controllers
         }
 
         //get expenses by participantId
-        [Route("participant/id")]
+        [Route("participant/{id}")]
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
