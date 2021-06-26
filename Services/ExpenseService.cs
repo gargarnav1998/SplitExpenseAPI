@@ -53,8 +53,10 @@ namespace SplitExpenses.Services
                 expense.Item = expenseModel.Item;
                 expense.Amount = expenseModel.Amount;
                 expense.GroupId = expenseModel.GroupId;
+                expense.ExtraInfo = expenseModel.Date.ToString();
                 expense.InvolveParticipants = expenseModel.ExpenseParticipants.Count();
                 expense.PaidParticipantId = expenseModel.PaidParticipantId;
+                expense.WhoPaid = paidParticipant.Name;
                 expense.Remarks = expenseModel.Remarks;
                 _unitOfWork.Repository<Expense>().Insert(expense);
                 _unitOfWork.Commit();
@@ -62,7 +64,7 @@ namespace SplitExpenses.Services
                 {
                     var participant = _unitOfWork.Repository<Participant>().FindBy(a => a.Id == p).FirstOrDefault();
                     var transaction = new Transaction();
-                    transaction.Amount = Convert.ToInt32(expenseModel.Amount);
+                    transaction.Amount = Convert.ToInt32(expenseModel.Amount)/ expenseModel.ExpenseParticipants.Count();
                     transaction.ExpenseId = expense.Id;
                     transaction.GroupId = expenseModel.GroupId;
                     transaction.ParticipantId = p;
