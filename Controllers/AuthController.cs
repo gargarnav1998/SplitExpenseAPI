@@ -21,9 +21,10 @@ namespace SplitExpenses.Controllers
             _authService = authService;
         }
 
+
         [HttpPost]
         [Route("login")]
-        public string Login(SignInModel signInModel)
+        public Participant Login(SignInModel signInModel)
         {
             var result = _authService.Login(signInModel);
             return result;
