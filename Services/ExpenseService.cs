@@ -59,11 +59,7 @@ namespace SplitExpenses.Services
             var participant = _unitOfWork.Repository<Participant>().FindBy(p => p.Id == participantId).FirstOrDefault();
             if (participant == null)
                 throw new Exception($"No Paticipant found by this participantId {participantId}");
-            var transactions = _unitOfWork.Repository<Transaction>().FindBy(t => t.ParticipantId == participant.Id).ToList();
-            if (transactions.Count() == 0)
-                throw new Exception($"No Transaction found by this participantId {participantId}");
-            var expenseIds = transactions.Select(s => s.ExpenseId).Distinct().ToList();
-            var expenses = _unitOfWork.Repository<Expense>().FindBy(e => expenseIds.Contains(e.Id)).ToList();
+            var expenses = _unitOfWork.Repository<Expense>().FindBy(e => e.PaidParticipantId == participantId).ToList();
             return expenses;
         }
 
