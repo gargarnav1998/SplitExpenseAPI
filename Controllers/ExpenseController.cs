@@ -42,6 +42,15 @@ namespace SplitExpenses.Controllers
             return Ok();
         }
 
+        [Route("addExpense")]
+        [HttpPost]
+        public ActionResult CreateExpenseAndTransaction(ExpenseModel expenseModel)
+        {
+            _expenseService.CreateExpenseAndTransaction(expenseModel);
+            return Ok();
+        }
+
+
 
         [HttpGet]
         [Route("groupId/{groupId}")]

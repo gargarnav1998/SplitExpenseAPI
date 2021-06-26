@@ -41,6 +41,45 @@ namespace SplitExpenses.Services
             _unitOfWork.Commit();
         }
 
+        public void CreateExpenseAndTransaction(ExpenseModel expenseModel)
+        {
+            var paidParticipant = _unitOfWork.Repository<Participant>().FindBy(p => p.Id == expenseModel.PaidParticipantId).FirstOrDefault();
+            var group = _groupService.GetGroupById(expenseModel.GroupId);
+            if (paidParticipant == null)
+                throw new Exception("participant can not add expenses");
+            else
+            {
+                var expense = new Expense();
+                expense.Item = expenseModel.Item;
+                expense.Amount = expenseModel.Amount;
+                expense.GroupId = expenseModel.GroupId;
+                expense.InvolveParticipants = expenseModel.ExpenseParticipants.Count();
+                expense.PaidParticipantId = expenseModel.PaidParticipantId;
+                expense.Remarks = expenseModel.Remarks;
+                _unitOfWork.Repository<Expense>().Insert(expense);
+                _unitOfWork.Commit();
+                expenseModel.ExpenseParticipants.ForEach(p =>
+                {
+                    var participant = _unitOfWork.Repository<Participant>().FindBy(a => a.Id == p).FirstOrDefault();
+                    var transaction = new Transaction();
+                    transaction.Amount = Convert.ToInt32(expenseModel.Amount);
+                    transaction.ExpenseId = expense.Id;
+                    transaction.GroupId = expenseModel.GroupId;
+                    transaction.ParticipantId = p;
+                    transaction.GroupName = group.Name;
+                    transaction.ParticipantName = participant.Name;
+                    transaction.IsActive = true;
+                    _unitOfWork.Repository<Transaction>().Insert(transaction);
+                    _unitOfWork.Commit();
+
+
+
+                });
+
+            }
+            
+        }
+
         public List<Expense> getAllExpenseByParticipantEmail(string email)
         {
             var participant = _unitOfWork.Repository<Participant>().FindBy(p => p.EmailId == email).FirstOrDefault();
