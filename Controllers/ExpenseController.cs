@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SplitExpenses.Entities;
+using SplitExpenses.Models;
 using SplitExpenses.Services;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace SplitExpenses.Controllers
 
         [HttpGet]
         [Route("groupId/{groupId}")]
-        public ActionResult<List<Expense>> GetExpensesByGroup(int groupId)
+        public List<Expense> GetExpensesByGroup(int groupId)
         {
             return _expenseService.GetExpenseByGroup(groupId);
         }
@@ -87,6 +88,17 @@ namespace SplitExpenses.Controllers
                 return BadRequest(ModelState);
             }
 
+        }
+
+        // divide group expenses
+        [Route("group/groupId")]
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public ActionResult<List<SplitGroupExpenses>> SplitGroupExpenses(int groupId)
+        {
+           var data =  _expenseService.SplitGroupExpenses(groupId);
+            return data;
         }
     }
 

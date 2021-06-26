@@ -1,4 +1,5 @@
 ﻿using SplitExpenses.Entities;
+using SplitExpenses.Models;
 using SplitExpenses.Provider;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,13 @@ namespace SplitExpenses.Services
     public class ExpenseService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ExpenseService(IUnitOfWork unitOfWork)
+        private readonly GroupService _groupService;
+        private readonly ParticipantService _participantService;
+        public ExpenseService(IUnitOfWork unitOfWork, GroupService groupService, ParticipantService participantService)
         {
             _unitOfWork = unitOfWork;
+            _groupService = groupService;
+            _participantService = participantService;
         }
 
         public List<Expense> GetAllExpense()
@@ -60,6 +65,26 @@ namespace SplitExpenses.Services
             var expenseIds = transactions.Select(s => s.ExpenseId).Distinct().ToList();
             var expenses = _unitOfWork.Repository<Expense>().FindBy(e => expenseIds.Contains(e.Id)).ToList();
             return expenses;
+        }
+
+        public List<SplitGroupExpenses> SplitGroupExpenses(int groupId)
+        {
+            var data = new List<SplitGroupExpenses>();
+            var group = _groupService.GetGroupById(groupId);
+            if (group == null)
+                throw new Exception("group not found");
+            var participants = _participantService.GetParticipantsByGroup(groupId);
+            if (participants.Count() == 0)
+                throw new Exception("No participant found");
+            var expenses = GetExpenseByGroup(groupId);
+            if (expenses.Count() == 0)
+                throw new Exception("no expenses added yet");
+            var expenseIds = expenses.Select(s => s.Id).ToList();
+            var transactions = _unitOfWork.Repository<Transaction>().FindBy(t => expenseIds.Contains(t.Id) && t.GroupId == groupId).ToList();
+            if (transactions.Count() == 0)
+                throw new Exception("No transactions found");
+            var groupExpenses = transactions.GroupBy(g => g.ExpenseId).ToList();
+            return data;
         }
 
 

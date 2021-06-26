@@ -34,6 +34,19 @@ namespace SplitExpenses.Services
             return participant;
         }
 
+        public Participant GetParticipantByUserNameAndPassword(string userName, string password)
+        {
+            if (userName == null || userName.Length == 0)
+                throw new Exception("Invalid UserName");
+            var participant = _unitOfWork.Repository<Participant>().FindBy(p => p.EmailId == userName && p.ExtraInfo2 == password).FirstOrDefault();
+            if (participant == null)
+            {
+                participant = _unitOfWork.Repository<Participant>().FindBy(p => p.ExtraInfo1 == userName && p.ExtraInfo2 == password).FirstOrDefault();
+            }
+            return participant;
+        }
+
+
         public bool CheckPassword(string password)
         {
             bool result;

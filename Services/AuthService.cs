@@ -18,22 +18,16 @@ namespace SplitExpenses.Services
             _participantService = participantService;
         }
 
-        public string Login(SignInModel loginModel)
+        public Participant Login(SignInModel loginModel)
         {
-            string msg = "";
             if (loginModel.UserName == null || loginModel.UserName.Length == 0)
                 throw new Exception("Invalid UserName");
             if (loginModel.Password == null || loginModel.Password.Length == 0)
                 throw new Exception("Incorrect Password");
-            var existingUser = _participantService.GetParticipantBYUserNameOrEmailId(loginModel.UserName);
+            var existingUser = _participantService.GetParticipantByUserNameAndPassword(loginModel.UserName,loginModel.Password);
             if (existingUser == null)
                 throw new Exception("No user found with this user name");
-            bool checkPassword = _participantService.CheckPassword(loginModel.Password);
-            if (checkPassword == false)
-                throw new Exception("Incorrect Password");
-            else
-                msg = "login successfully";
-            return msg;
+            return existingUser;
 
         }
 
