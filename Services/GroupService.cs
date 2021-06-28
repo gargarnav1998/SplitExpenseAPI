@@ -29,6 +29,18 @@ namespace SplitExpenses.Services
         {
             _unitOfWork.Repository<Group>().Insert(group);
             _unitOfWork.Commit();
+            var participant = _unitOfWork.Repository<Participant>().FindBy(p => p.Id == group.adminParticipantId).First();
+            if (participant != null)
+            {
+                var groupParticipant = new GroupParticipant();
+                groupParticipant.GroupId = group.Id;
+                groupParticipant.ParticipantId = participant.Id;
+                groupParticipant.IsActive = true;
+                _unitOfWork.Repository<GroupParticipant>().Insert(groupParticipant);
+                _unitOfWork.Commit();
+
+            }
+            
         }
 
         public List<Group> GetGroupsByParticipantId(int participantId)
