@@ -7,6 +7,7 @@ namespace SplitExpenses.Entities
         public string Name { get; set; }
         public string Purpose { get; set; }
         public Type Type { get; set; }
+        public int adminParticipantId { get; set; }
         public string Remarks { get; set; }
         public string ExtraInfo { get; set; }
         public string ExtraInfo1 { get; set; }
@@ -14,6 +15,6 @@ namespace SplitExpenses.Entities
     }
     public enum Type
     {
-        Permanent, Temporary
+        Friendly,Official,Temporary,Personal
     }
 }

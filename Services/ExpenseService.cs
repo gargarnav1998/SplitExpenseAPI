@@ -64,7 +64,7 @@ namespace SplitExpenses.Services
                 {
                     var participant = _unitOfWork.Repository<Participant>().FindBy(a => a.Id == p).FirstOrDefault();
                     var transaction = new Transaction();
-                    transaction.Amount = Convert.ToInt32(expenseModel.Amount)/ expenseModel.ExpenseParticipants.Count();
+                    transaction.Amount = expenseModel.Amount/ expenseModel.ExpenseParticipants.Count();
                     transaction.ExpenseId = expense.Id;
                     transaction.GroupId = expenseModel.GroupId;
                     transaction.ParticipantId = p;

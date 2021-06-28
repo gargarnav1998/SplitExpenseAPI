@@ -15,6 +15,8 @@ namespace SplitExpenses.Entities
         public string ExtraInfo1 { get; set; }
         public string ExtraInfo2 { get; set; }
         public string ExtraInfo3 { get; set; }
+        public string ExtraInfo4 { get; set; }
+        public string ExtraInfo5 { get; set; }
 
     }
 }
