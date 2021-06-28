@@ -31,7 +31,7 @@ namespace SplitExpenses.Controllers
         }
 
         [HttpPost]
-        [Route("singUp")]
+        [Route("signUp")]
         public Participant SignUp(SignUpModel signUpModel)
         {
             var result = _authService.SignUp(signUpModel);
