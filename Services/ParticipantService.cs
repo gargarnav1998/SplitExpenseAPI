@@ -60,7 +60,7 @@ namespace SplitExpenses.Services
             return result;
         }
 
-      public bool  GetParticipantByMobile(int mobile)
+      public bool  GetParticipantByMobile(long mobile)
         {
             bool result;
             if (mobile.ToString().Length == 0)
