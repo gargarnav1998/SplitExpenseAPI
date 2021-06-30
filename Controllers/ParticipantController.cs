@@ -36,7 +36,7 @@ namespace SplitExpenses.Controllers
         }
         [Route("participant/mobile/{mobile}")]
         [HttpGet]
-        public ActionResult<Participant> GetParticipantByMobile(int mobile)
+        public ActionResult<Participant> GetParticipantByMobile(long mobile)
         {
            var result = _pService.GetParticipantByMobile(mobile);
             return result;
