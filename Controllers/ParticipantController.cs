@@ -28,15 +28,15 @@ namespace SplitExpenses.Controllers
         }
 
         [Route("participant/username/{username}")]
-        [HttpPost]
-        public ActionResult CreateGroupParticipant(string username)
+        [HttpGet]
+        public ActionResult GetParticipantBYUserNameOrEmailId(string username)
         {
             _pService.GetParticipantBYUserNameOrEmailId(username);
             return Ok();
         }
         [Route("participant/mobile/{mobile}")]
-        [HttpPost]
-        public ActionResult CreateGroupParticipant(int mobile)
+        [HttpGet]
+        public ActionResult GetParticipantByMobile(int mobile)
         {
             _pService.GetParticipantByMobile(mobile);
             return Ok();
