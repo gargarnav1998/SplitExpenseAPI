@@ -49,8 +49,8 @@ namespace SplitExpenses.Services
             var existingParticipantByEmail = _participantService.GetParticipantBYUserNameOrEmailId(signUpModel.Email);
             if (existingParticipantByEmail != null)
                 throw new Exception("this email is already registered please login intstead of signup");
-            bool existingParticipantByMobile = _participantService.GetParticipantByMobile(signUpModel.Mobile);
-            if (existingParticipantByMobile == true)
+            var existingParticipantByMobile = _participantService.GetParticipantByMobile(signUpModel.Mobile);
+            if (existingParticipantByMobile != null)
                 throw new Exception("this mobile number is already registered please either try to login or signup with another one");
             var participant = new Participant();
             participant.Mobile = signUpModel.Mobile;

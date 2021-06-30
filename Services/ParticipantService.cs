@@ -60,17 +60,10 @@ namespace SplitExpenses.Services
             return result;
         }
 
-      public bool  GetParticipantByMobile(long mobile)
+      public Participant  GetParticipantByMobile(long mobile)
         {
-            bool result;
-            if (mobile.ToString().Length == 0)
-                throw new Exception("Invalid mobile number");
             var participant = _unitOfWork.Repository<Participant>().FindBy(p => p.Mobile == mobile).FirstOrDefault();
-            if (participant == null)
-                result = false;
-            else
-                result = true;
-            return result;
+            return participant;
         }
 
         public void CreateParticipant(Participant participant)
