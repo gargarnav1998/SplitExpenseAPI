@@ -64,6 +64,9 @@ namespace SplitExpenses.Services
                 {
                     var participant = _unitOfWork.Repository<Participant>().FindBy(a => a.Id == p).FirstOrDefault();
                     var transaction = new Transaction();
+                    transaction.PaidParticipantId = paidParticipant.Id;
+                    transaction.PaidParticipantName = paidParticipant.Name;
+                    transaction.TotalAmount = expenseModel.Amount;
                     transaction.Amount = expenseModel.Amount/ expenseModel.ExpenseParticipants.Count();
                     transaction.ExpenseId = expense.Id;
                     transaction.GroupId = expenseModel.GroupId;
@@ -104,9 +107,9 @@ namespace SplitExpenses.Services
             return expenses;
         }
 
-        public List<SplitGroupExpenses> SplitGroupExpenses(int groupId)
+        public List<SplitExpensecs> SplitGroupExpenses(int groupId)
         {
-            var data = new List<SplitGroupExpenses>();
+            var data = new List<SplitExpensecs>(); 
             var group = _groupService.GetGroupById(groupId);
             if (group == null)
                 throw new Exception("group not found");
@@ -120,10 +123,26 @@ namespace SplitExpenses.Services
             var transactions = _unitOfWork.Repository<Transaction>().FindBy(t => expenseIds.Contains(t.Id) && t.GroupId == groupId).ToList();
             if (transactions.Count() == 0)
                 throw new Exception("No transactions found");
-            var groupExpenses = transactions.GroupBy(g => g.ExpenseId).ToList();
+            var groupExpenses = transactions.GroupBy(g => new
+            {
+                g.PaidParticipantName,
+                g.ParticipantName
+            }).ToList();
             return data;
-        }
+            groupExpenses.ForEach(g => {
+                var model = new SplitExpensecs();
+                model.WhoPaid = g.Key.PaidParticipantName;
+                model.TotalAmount = g.Sum(e => e.TotalAmount);
+                model.AmountToBePaid = g.Sum(e => e.Amount);
+                model.GroupName = g.FirstOrDefault().GroupName;
+                model.GroupId = groupId;
+                model.ForWHom = g.Key.ParticipantName;
+                data.Add(model);
+            
+            });
+            return data;
 
+        }
 
     }
 }

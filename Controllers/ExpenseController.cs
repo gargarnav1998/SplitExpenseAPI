@@ -104,7 +104,7 @@ namespace SplitExpenses.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public ActionResult<List<SplitGroupExpenses>> SplitGroupExpenses(int groupId)
+        public ActionResult<List<SplitExpensecs>> SplitGroupExpenses(int groupId)
         {
            var data =  _expenseService.SplitGroupExpenses(groupId);
             return data;
