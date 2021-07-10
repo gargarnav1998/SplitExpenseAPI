@@ -128,7 +128,6 @@ namespace SplitExpenses.Services
                 g.PaidParticipantName,
                 g.ParticipantName
             }).ToList();
-            return data;
             groupExpenses.ForEach(g => {
                 var model = new SplitExpensecs();
                 model.WhoPaid = g.Key.PaidParticipantName;
